@@ -38,7 +38,7 @@ const addBookHandler = (request, h) => {
     return httpError(h, error)
   }
 
-  console.log(newBook);
+  // console.log(newBook);
 
   books.push(newBook);
 
@@ -63,16 +63,30 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBooksHandler = () => ({
-  status: 'success',
-  data: {
-    books: books.map((e) => ({
-      id: e.id,
-      name: e.name,
-      publisher: e.publisher,
-    })),
-  },
-});
+const getAllBooksHandler = (request, h) => {
+  console.log(books)
+  let { reading, finished, name } = request.query
+  reading = reading === '1'
+  finished = finished === '1';
+  if (name === undefined) {
+    name = ''
+  }
+  name = name.toLowerCase()
+  const condition = (e) => e.reading === reading && e.finished === finished
+    && e.name.toLowerCase().includes(name)
+  const output = books.filter(condition)
+  console.log(h.Toolkit)
+  return {
+    status: 'success',
+    data: {
+      books: output.map((e) => ({
+        id: e.id,
+        name: e.name,
+        publisher: e.publisher,
+      })),
+    },
+  };
+};
 
 const getBookByIdHandler = (request, h) => {
   const { id } = request.params;

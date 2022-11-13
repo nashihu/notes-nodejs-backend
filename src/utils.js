@@ -18,7 +18,7 @@ const bsValidator = (object, validator) => {
       [, message] = e
       return e
     }
-    console.log(obj)
+    // console.log(obj)
     if (obj[0][1] === undefined) {
       [, message] = e
     }
